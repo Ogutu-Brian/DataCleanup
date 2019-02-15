@@ -57,8 +57,17 @@ def merge_back_data()->None:
     source_cleanup()
     followers_cleanup()
     location_cleanup()
-
+    add_number_tweet_chars_column()
     data.insert(0, columns)
+
+
+def add_number_tweet_chars_column()->None:
+    """
+    Add the a column of number of characters in a tweet
+    """
+    columns.append("NumTweetChars")
+    for row in data:
+        row.append(len(row[Column.Text]))
 
 
 def write_to_file(filename: str)->None:
@@ -66,7 +75,6 @@ def write_to_file(filename: str)->None:
     merge_back_data()
     with open(filename, mode="w") as file:
         data_writer = csv.writer(file, delimiter=',')
-        data_writer.writerow(columns)
         for row in data:
             data_writer.writerow(row)
 
